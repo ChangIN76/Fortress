@@ -44,12 +44,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        if (dropDown == null)
-        {
-            Debug.LogError("Dropdown이 할당되지 않았습니다.");
-            return;
-        }
-
         // JoinLobby : 특정 로비를 생성하여 진입하는 함수
         PhotonNetwork.JoinLobby
          (
@@ -60,5 +54,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             )
          );
 
+    }
+
+    public override void OnJoinedLobby()
+    {
+        PhotonNetwork.IsMessageQueueRunning = true;
+
+        PhotonNetwork.LoadLevel("Room");
     }
 }

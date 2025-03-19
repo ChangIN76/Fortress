@@ -2009,7 +2009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   titleinputField: {fileID: 2040140924}
   capacityinputField: {fileID: 826075980}
-  parentTransform: {fileID: 36338775}
+  parentTransform: {fileID: 1138202482}
 --- !u!4 &2085573839
 Transform:
   m_ObjectHideFlags: 0

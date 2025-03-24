@@ -6,8 +6,8 @@ using Photon.Realtime;
 
 public class CreateManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] static int count = 0;
-    [SerializeField] Transform[] transform;
+   
+    [SerializeField] Transform[] transforms;
     
     private void Awake()
     {
@@ -19,13 +19,10 @@ public class CreateManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Instantiate
         (
             "Character",
-             transform[count++].position,
+             transforms[Random.Range(0, transforms.Length)].position,
              Quaternion.identity
         );      
     }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        count--;
-    }
+ 
 }

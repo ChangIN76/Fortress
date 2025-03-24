@@ -386,6 +386,7 @@
 "Assets/Scripts/CreateManager.cs"
 "Assets/Scripts/Information.cs"
 "Assets/Scripts/LobbyManager.cs"
+"Assets/Scripts/MasterManager.cs"
 "Assets/Scripts/MouseManager.cs"
 "Assets/Scripts/Move.cs"
 "Assets/Scripts/PlayfabManager.cs"

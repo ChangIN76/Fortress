@@ -390,8 +390,10 @@
 "Assets/Scripts/MasterManager.cs"
 "Assets/Scripts/MouseManager.cs"
 "Assets/Scripts/Move.cs"
+"Assets/Scripts/Name.cs"
 "Assets/Scripts/NickName.cs"
 "Assets/Scripts/NickNameManager.cs"
+"Assets/Scripts/Pause.cs"
 "Assets/Scripts/PlayfabManager.cs"
 "Assets/Scripts/RoomManager.cs"
 "Assets/Scripts/Rotation.cs"
@@ -429,6 +431,15 @@
 "Assets/TextMesh Pro/Examples & Extras/Scripts/VertexShakeB.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/VertexZoom.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/WarpTextExample.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Audio/CheckMusicVolume.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Audio/CheckSFXVolume.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Managers/UIMenuManager.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Managers/UISettingsManager.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Misc/ExtraLinks.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/Misc/ResetDemo.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/ThemeEditor/ThemedUI.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/ThemeEditor/ThemedUIData.cs"
+"Assets/User Interface/Modern Menu 1/Scripts/ThemeEditor/ThemedUIElement.cs"
 -langversion:9.0
 /deterministic
 /optimize+

@@ -9,16 +9,19 @@ public class MasterManager : MonoBehaviourPunCallbacks
     [SerializeField] WaitForSeconds waitForSeconds = new WaitForSeconds(5.0f);
     void Start()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine(Create());
-        }        
+        }
     }
     IEnumerator Create()
     {
         while (true)
         {
-            PhotonNetwork.Instantiate("Energy", Vector3.zero, Quaternion.identity);
+            if (PhotonNetwork.CurrentRoom != null)
+            { 
+                PhotonNetwork.Instantiate("Energy", Vector3.zero, Quaternion.identity);
+            }
 
             yield return waitForSeconds;
         }

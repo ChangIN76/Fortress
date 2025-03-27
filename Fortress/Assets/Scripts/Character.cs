@@ -1,33 +1,55 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Move))]
-[RequireComponent (typeof(Rotation))]
-
+[RequireComponent(typeof(Rotation))]
+[RequireComponent(typeof(Rigidbody))]
 public class Character : MonoBehaviourPun
 {
-    [SerializeField] Move move;
-    [SerializeField] Rotation rotation;
-    [SerializeField] Rigidbody rigidBody;
-    [SerializeField] GameObject remoteCamera;
+    private Move move;
+    private Rotation rotation;
+    private Rigidbody rigidBody;
+
+    [SerializeField] private GameObject remoteCamera;
+    private GameObject pausePanel;
 
     private void Awake()
     {
+        // 컴포넌트 할당
         move = GetComponent<Move>();
         rotation = GetComponent<Rotation>();
-        rigidBody = GetComponent<Rigidbody>();        
+        rigidBody = GetComponent<Rigidbody>();
+
+        // PausePanel 찾기 (비활성화된 오브젝트 포함)
+        Pause pause = FindObjectOfType<Pause>(true);
+        if (pause != null)
+        {
+            pausePanel = pause.gameObject;
+        }
+        else
+        {
+            Debug.LogWarning("Pause Panel을 찾을 수 없습니다.");
+        }
     }
 
-    void Start()
+    private void Start()
     {
         DisableCamera();
     }
 
     private void Update()
     {
-        if (photonView.IsMine == false) return;
+        // 내 캐릭터가 아니면 입력 X
+        if (!photonView.IsMine) return;
+
+        // ESC 누르면 일시정지 패널 표시
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            MouseManager.Instance.SetMouse(true);
+
+            if (pausePanel != null)
+                pausePanel.SetActive(true);
+        }
 
         move.OnKeyUpdate();
         rotation.OnMouseUpdate();
@@ -35,20 +57,26 @@ public class Character : MonoBehaviourPun
 
     private void FixedUpdate()
     {
+        if (!photonView.IsMine) return;
+
         move.OnMove(rigidBody);
         rotation.RotateY(rigidBody);
     }
 
+    /// <summary>
+    /// 내 캐릭터일 경우 메인 카메라 비활성화, 다른 캐릭터일 경우 Remote Camera 비활성화
+    /// </summary>
     public void DisableCamera()
     {
-        // 현재 플레이어가 나 자신이라면?
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
-            Camera.main.gameObject.SetActive(false);
+            if (Camera.main != null)
+                Camera.main.gameObject.SetActive(false);
         }
         else
         {
-            remoteCamera.SetActive(false);
+            if (remoteCamera != null)
+                remoteCamera.SetActive(false);
         }
     }
 }

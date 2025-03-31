@@ -385,6 +385,7 @@
 "Assets/Scripts/Character.cs"
 "Assets/Scripts/CreateManager.cs"
 "Assets/Scripts/DialogManager.cs"
+"Assets/Scripts/Head.cs"
 "Assets/Scripts/Information.cs"
 "Assets/Scripts/LobbyManager.cs"
 "Assets/Scripts/MasterManager.cs"

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +14,45 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     [SerializeField] Dictionary<string, GameObject> dictionary = new Dictionary<string, GameObject>();
 
-    void Start()
+    private void Start()
     {
-        if(PhotonNetwork.InLobby == false)
+        // Photonì´ ì—°ê²°ë˜ì§€ ì•Šì•˜ì„ ê²½ìš°ì—ë§Œ ì—°ê²° ì‹œë„
+        if (PhotonNetwork.NetworkClientState == Photon.Realtime.ClientState.Disconnected)
         {
-            PhotonNetwork.JoinLobby();
+            PhotonNetwork.ConnectUsingSettings();  // ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì‹œë„
         }
+        else
+        {
+            Debug.LogWarning("ì´ë¯¸ ì—°ê²° ì¤‘ì´ê±°ë‚˜ ì—°ê²° ìƒíƒœê°€ ë‹¤ë¦…ë‹ˆë‹¤. ì—°ê²°ì„ ë‹¤ì‹œ ì‹œë„í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        // ì—°ê²°ì´ ì™„ë£Œë˜ì—ˆìœ¼ë©´ ë¡œë¹„ì— ì°¸ê°€í•©ë‹ˆë‹¤.
+        Debug.Log("ë§ˆìŠ¤í„° ì„œë²„ ì—°ê²° ì™„ë£Œ");                 
+    }
+
+    void Update()
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            Debug.Log("Lobby Connect");
+        }
+
+        if (PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Client Connect");
+        }
+        else
+        {
+            Debug.Log("Not Client Connect.");
+        }
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("ë¡œë¹„ ì…ì¥ ì™„ë£Œ");
     }
 
     public override void OnJoinedRoom()
@@ -30,11 +63,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public void OnCreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
-
         roomOptions.MaxPlayers = byte.Parse(capacityinputField.text);
-
         roomOptions.IsOpen = true;
-
         roomOptions.IsVisible = true;
 
         PhotonNetwork.CreateRoom(titleinputField.text, roomOptions);
@@ -42,37 +72,30 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log(roomList.Count);
+
         GameObject prefab = null;
 
-        foreach(RoomInfo room in roomList)
+        foreach (RoomInfo room in roomList)
         {
-            // ·ëÀÌ »èÁ¦µÈ °æ¿ì
-            if(room.RemovedFromList == true)
+            if (room.RemovedFromList == true)
             {
-                dictionary.TryGetValue(room.Name, out prefab); 
-
+                dictionary.TryGetValue(room.Name, out prefab);
                 Destroy(prefab);
-
                 dictionary.Remove(room.Name);
             }
-            else // ·ëÀÇ Á¤º¸°¡ º¯°æµÇ´Â °æ¿ì
+            else
             {
-                // ·ëÀÌ Ã³À½ »ı¼ºµÇ´Â °æ¿ì
-                if(dictionary.ContainsKey(room.Name) == false)
+                if (dictionary.ContainsKey(room.Name) == false)
                 {
                     GameObject clone = Instantiate(Resources.Load<GameObject>("Room"), parentTransform);
-
                     clone.GetComponent<Information>().View(room.Name, room.PlayerCount, room.MaxPlayers);
-
                     dictionary.Add(room.Name, clone);
                 }
-                else // ·ëÀÇ Á¤º¸°¡ º¯°æµÇ´Â °æ¿ì
+                else
                 {
                     dictionary.TryGetValue(room.Name, out prefab);
-
                     prefab.GetComponent<Information>().View(room.Name, room.PlayerCount, room.MaxPlayers);
-
-
                 }
             }
         }

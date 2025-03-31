@@ -21,6 +21,8 @@ public class Pause : MonoBehaviourPunCallbacks
     {
         gameObject.SetActive(false);
 
+        PhotonNetwork.JoinLobby();
+
         PhotonNetwork.LoadLevel("Room");
     }
 }

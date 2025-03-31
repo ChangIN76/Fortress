@@ -27,6 +27,52 @@ namespace SlimUI.ModernMenu{
         private int themeIndex;
         public ThemedUIData themeController;
 
+        public void SetTheme(int index)
+        {
+            themeIndex = index;  // 테마 인덱스를 설정
+
+            // 실제로 테마를 변경하는 로직
+            // 예를 들어, 테마를 색상으로 바꾸는 코드
+            switch (themeIndex)
+            {
+                case 0:
+                    // 첫 번째 테마 (예: 기본 테마)
+                    ApplyDefaultTheme();
+                    break;
+                case 1:
+                    // 두 번째 테마 (예: 어두운 테마)
+                    ApplyDarkTheme();
+                    break;
+                case 2:
+                    // 세 번째 테마 (예: 밝은 테마)
+                    ApplyLightTheme();
+                    break;
+                default:
+                    ApplyDefaultTheme();
+                    break;
+            }
+        }
+
+        // 테마 적용하는 메서드 예시
+        private void ApplyDefaultTheme()
+        {
+            // 기본 테마를 UI에 적용하는 코드
+            Debug.Log("Applying Default Theme");
+        }
+
+        private void ApplyDarkTheme()
+        {
+            // 어두운 테마를 UI에 적용하는 코드
+            Debug.Log("Applying Dark Theme");
+        }
+
+        private void ApplyLightTheme()
+        {
+            // 밝은 테마를 UI에 적용하는 코드
+            Debug.Log("Applying Light Theme");
+        }
+
+
         [Header("PANELS")]
         [Tooltip("The UI Panel parenting all sub menus")]
         public GameObject mainCanvas;

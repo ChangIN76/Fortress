@@ -7,39 +7,19 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] public Dropdown dropDown;
-
-    void Start()
-    {
-        Dropdown[] dropdowns = FindObjectsOfType<Dropdown>();
-        Debug.Log($"씬에 있는 Dropdown 개수: {dropdowns.Length}");
-
-        foreach (Dropdown dropdown in dropdowns)
-        {
-            Debug.Log($"Dropdown 이름: {dropdown.gameObject.name}, 활성화 상태: {dropdown.gameObject.activeInHierarchy}");
-        }
-
-        if (dropDown == null)
-        {
-            dropDown = FindObjectOfType<Dropdown>();
-
-            if (dropDown == null)
-            {
-                Debug.LogError("Dropdown을 찾을 수 없습니다. 씬에 Dropdown이 있는지 확인하세요.");
-            }
-            else
-            {
-                Debug.Log($"Dropdown이 정상적으로 할당됨: {dropDown.gameObject.name}");
-            }
-        }
-    }
+    [SerializeField] Dropdown dropDown;
 
     public void Connect()
     {
-        // 서버에 접속하는 함수
-        PhotonNetwork.ConnectUsingSettings();
-
-        PhotonNetwork.LoadLevel("Room");
+        // 연결 상태 확인 후 연결 시도
+        if (PhotonNetwork.IsConnected == false)
+        {
+            PhotonNetwork.ConnectUsingSettings(); // 연결 시도
+        }
+        else
+        {
+            Debug.Log("Already connect to Photon. Currnet state: " + PhotonNetwork.NetworkClientState);
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -48,18 +28,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby
          (
          new TypedLobby
-            (
-              dropDown.options[dropDown.value].text,
-              LobbyType.Default
-            )
+             (
+                 dropDown.options[dropDown.value].text,
+                 LobbyType.Default
+             )
          );
-
     }
 
     public override void OnJoinedLobby()
     {
-        PhotonNetwork.IsMessageQueueRunning = true;
+        StartCoroutine(LoadRoom());
+    }
 
+    private IEnumerator LoadRoom()
+    {
+        // 연결이 준비될 때까지 대기합니다.
+        while (!PhotonNetwork.IsConnectedAndReady)
+        {
+            yield return null;
+        }
+
+        // 연결이 준비되었으면 씬 로드
         PhotonNetwork.LoadLevel("Room");
     }
 }

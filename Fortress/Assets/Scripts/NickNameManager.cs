@@ -9,6 +9,13 @@ public class NickNameManager : MonoBehaviour
 {
     [SerializeField] GameObject nickNamePanel;
 
+    void Start()
+    {
+        Debug.Log("Stored Name: " + PlayerPrefs.GetString("Name"));  // Name 키로 저장된 값을 확인
+
+        PlayerPrefs.DeleteAll();  // 모든 PlayerPrefs 데이터 삭제
+    }
+
     public void Awake()
     {
         if(string.IsNullOrEmpty(PlayerPrefs.GetString("Name")))
@@ -20,5 +27,4 @@ public class NickNameManager : MonoBehaviour
             nickNamePanel.SetActive(false);
         }
     }
-
 }

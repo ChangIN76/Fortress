@@ -5,8 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MasterManager : MonoBehaviourPunCallbacks
-{
+{    
+    [SerializeField] int count = 0;
+    [SerializeField] Transform [ ] transforms;
+    [SerializeField] GameObject [ ] energyList;
+
     [SerializeField] WaitForSeconds waitForSeconds = new WaitForSeconds(5.0f);
+
     void Start()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -18,9 +23,11 @@ public class MasterManager : MonoBehaviourPunCallbacks
     {
         while (true)
         {
-            if (PhotonNetwork.CurrentRoom != null)
+            if (PhotonNetwork.CurrentRoom != null && energyList[count] == null)
             { 
-                PhotonNetwork.Instantiate("Energy", Vector3.zero, Quaternion.identity);
+                energyList[count] = PhotonNetwork.InstantiateRoomObject("Energy", transforms[count].position, Quaternion.identity);
+
+                count = (count + 1) & energyList.Length;
             }
 
             yield return waitForSeconds;
@@ -32,5 +39,14 @@ public class MasterManager : MonoBehaviourPunCallbacks
         PhotonNetwork.SetMasterClient(PhotonNetwork.PlayerList[0]);
 
         StartCoroutine(Create());
+    }
+ 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2)
+        {
+            Debug.Log("Game Start");
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+        }
     }
 }

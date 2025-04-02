@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using PlayFab.EventsModels;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] InputField titleinputField;
-    [SerializeField] InputField capacityinputField;
-
+    [SerializeField] GameObject createPanel;
     [SerializeField] Transform parentTransform;
 
     [SerializeField] Dictionary<string, GameObject> dictionary = new Dictionary<string, GameObject>();
@@ -50,12 +49,19 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public void OnCreateRoom()
     {
+        createPanel.SetActive(true);
+
+        /*
         RoomOptions roomOptions = new RoomOptions();
+
         roomOptions.MaxPlayers = byte.Parse(capacityinputField.text);
+
         roomOptions.IsOpen = true;
+
         roomOptions.IsVisible = true;
 
         PhotonNetwork.CreateRoom(titleinputField.text, roomOptions);
+        */
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

@@ -387,6 +387,7 @@
 "Assets/Scripts/DialogManager.cs"
 "Assets/Scripts/Energy.cs"
 "Assets/Scripts/Failure.cs"
+"Assets/Scripts/GaneManager.cs"
 "Assets/Scripts/Head.cs"
 "Assets/Scripts/Information.cs"
 "Assets/Scripts/LobbyManager.cs"
